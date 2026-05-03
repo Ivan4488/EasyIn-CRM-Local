@@ -1,0 +1,28 @@
+<!doctype html>
+<html><head><title>diag</title></head>
+<body>
+<div id="out" style="font-family:monospace;white-space:pre-wrap;padding:20px;background:#111;color:#0f0;font-size:13px;min-height:200px">
+Loading...
+</div>
+<script>
+// Capture errors BEFORE any module loads
+window.__errors = [];
+window.onerror = function(msg, src, line, col, err) {
+  window.__errors.push('ERROR: ' + msg + '\n  at ' + src + ':' + line);
+  document.getElementById('out').textContent = window.__errors.join('\n\n');
+  return false;
+};
+window.addEventListener('unhandledrejection', function(e) {
+  var msg = 'PROMISE REJECTION: ' + (e.reason && e.reason.stack ? e.reason.stack : String(e.reason));
+  window.__errors.push(msg);
+  document.getElementById('out').textContent = window.__errors.join('\n\n');
+});
+setTimeout(function() {
+  if (window.__errors.length === 0) {
+    document.getElementById('out').textContent = 'No errors after 5s. Check http://localhost:5173 directly.';
+  }
+}, 5000);
+</script>
+<script type="module" src="/src/main.tsx"></script>
+<div id="root"></div>
+</body></html>

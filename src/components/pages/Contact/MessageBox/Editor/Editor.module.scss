@@ -1,0 +1,74 @@
+.editor {
+  width: 100%;
+
+  :global {
+    .ProseMirror {
+      a {
+        @apply text-strong-green;
+        text-decoration: underline;
+      }
+
+      p.is-editor-empty:first-child::before {
+        @apply text-text-weak;
+        @apply text-display-16;
+        content: attr(data-placeholder);
+        float: left;
+        height: 0;
+        pointer-events: none;
+      }
+
+      ol,
+      ul,
+      menu {
+        // list-style: auto !important;
+        margin-left: 26px;
+
+        li {
+          padding-bottom: 12px;
+          position: relative;
+        }
+      }
+
+      ol {
+        counter-reset: number;
+
+        li {
+          counter-increment: number;
+
+          &::before {
+            text-align: right;
+            content: counter(number)". ";
+            position: absolute;
+            width: 20px;
+            left: -30px;
+          }
+        }
+      }
+
+      ul {
+        li::before {
+          content: "";
+          position: absolute;
+          width: 12px;
+          height: 2px;
+          top: 10px;
+          left: -24px;
+          background-color: #fff;
+          border-radius: 15px;
+        }
+      }
+
+      .mention {
+        @apply text-strong-green;
+      }
+
+      // a {
+      //   color: #00A0E2;
+
+      //   &:hover {
+      //     text-decoration: underline;
+      //   }
+      // }
+    }
+  }
+}

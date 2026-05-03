@@ -1,0 +1,16 @@
+.scrollbar {
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply bg-text-weak;
+    border-radius: 4px;
+    border: 2px solid transparent;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 4px;
+    background: #3C4041;
+  }
+}

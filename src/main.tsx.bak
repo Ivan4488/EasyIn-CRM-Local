@@ -1,0 +1,28 @@
+import { createRoot } from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useState } from "react";
+import { Toaster } from "~/components/UI/Toast/toaster";
+import "~/styles/globals.css";
+import App from "./App";
+
+function Root() {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 60 * 1000,
+          },
+        },
+      })
+  );
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Toaster />
+      <App />
+    </QueryClientProvider>
+  );
+}
+
+createRoot(document.getElementById("root")!).render(<Root />);
