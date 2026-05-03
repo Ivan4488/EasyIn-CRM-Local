@@ -10,18 +10,21 @@ import {
   mockCompanyAssociations, mockDomain,
 } from "~/data/mockData";
 
+// Returns a fake axios-style response: { data: T }
 const ok = <T>(data: T) => Promise.resolve({ data, status: 200, statusText: "OK", headers: {}, config: {} as any });
 
 const get = <T = any>(url: string): Promise<{ data: T }> => {
-  // Records list
+  // Records list - home page — filter by activeItems exactly like the real backend
   if (url.startsWith('/records/list')) {
     const params = new URLSearchParams(url.includes('?') ? url.split('?')[1] : '');
     const filterParam = params.get('filter') ?? '';
     const filters = filterParam ? filterParam.split(',').map((f: string) => f.trim()).filter(Boolean) : [];
+
     const allContactRecords = mockContacts.map((c) => ({ type: 'contact' as const, page: 1, limit: 10, data: c }));
     const allCompanyRecords = mockCompanies.map((c) => ({ type: 'company' as const, page: 1, limit: 10, data: c }));
     const allMessageRecords = mockConvoRecords.map((m) => ({ type: 'message' as const, page: 1, limit: 10, data: m }));
     let records: any[] = [...allContactRecords, ...allCompanyRecords, ...allMessageRecords];
+
     if (filters.length > 0) {
       const wantsContact = filters.includes('contact');
       const wantsCompany = filters.includes('company');
@@ -34,10 +37,12 @@ const get = <T = any>(url: string): Promise<{ data: T }> => {
         );
       }
     }
+
     const pg = parseInt(params.get('page') ?? '1', 10);
     const lim = parseInt(params.get('limit') ?? '10', 10);
     const start = (pg - 1) * lim;
     const paged = records.slice(start, start + lim);
+
     return ok({ records: paged, page: pg, limit: lim, total: records.length, hasNext: start + lim < records.length } as any);
   }
   if (url === '/records/all') return ok(mockRecordsAll as any);
@@ -53,7 +58,7 @@ const get = <T = any>(url: string): Promise<{ data: T }> => {
   // Domain
   if (url.includes("/domain")) return ok(mockDomain as any);
 
-  // Contacts — /contacts/find/:id must come before generic /:id
+  // Contacts
   if (url === "/contacts/all") return ok(mockContacts as any);
   if (url.startsWith("/contacts/find/")) {
     const id = url.split("/").pop();
@@ -66,7 +71,7 @@ const get = <T = any>(url: string): Promise<{ data: T }> => {
   if (/^\/contacts\/[^/]+\/properties/.test(url)) return ok(mockContactProperties as any);
   if (url === "/contacts/duplicate-reviews") return ok({ reviews: [] } as any);
 
-  // Companies — /companies/find/:id must come before generic /:id
+  // Companies
   if (url === "/companies/all") return ok(mockCompanies as any);
   if (url.startsWith("/companies/find/")) {
     const id = url.split("/").pop();
@@ -92,12 +97,18 @@ const get = <T = any>(url: string): Promise<{ data: T }> => {
     return ok((mockMessages[cid] ?? []) as any);
   }
 
-  // Team — /users/:id returns full UserData shape (TeamMember + extra fields)
+  // Team — /users/:id returns full UserData shape
   if (url === "/users/team") return ok(mockTeamMembers as any);
   if (/^\/users\/[^/]+$/.test(url) && !url.includes("/properties")) {
     const id = url.split("/").pop();
     const member = mockTeamMembers.find((u) => u.id === id) ?? mockTeamMembers[0];
-    return ok({ ...member, created_at: "2024-01-01T00:00:00Z", updated_at: "2024-01-01T00:00:00Z", account_id: "account-1", is_invite_accepted: true } as any);
+    return ok({
+      ...member,
+      created_at: "2024-01-01T00:00:00Z",
+      updated_at: "2024-01-01T00:00:00Z",
+      account_id: "account-1",
+      is_invite_accepted: true,
+    } as any);
   }
   if (/^\/users\/[^/]+\/properties/.test(url)) return ok(mockTeamProperties as any);
   if (url === "/users/properties/schema") return ok(mockTeamProperties as any);
@@ -130,6 +141,7 @@ const get = <T = any>(url: string): Promise<{ data: T }> => {
   return ok(null as any);
 };
 
+// All mutations are no-ops that resolve immediately
 const post = (_url: string, _data?: any) => ok({ success: true });
 const put = (_url: string, _data?: any) => ok({ success: true });
 const patch = (_url: string, _data?: any) => ok({ success: true });
