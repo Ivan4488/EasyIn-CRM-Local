@@ -71,6 +71,55 @@ export const mockMessages: Record<string, MessageData[]> = {
 };
 
 // Response feed
+
+// Conversation records — shown in the record list when 'Conversation' nav item is active
+export const mockConvoRecords: MessageData[] = [
+  {
+    id: 'msg-1-2', text: '<p>Yes, board meeting went well. Can we schedule a demo Tuesday?</p>',
+    created_at: '2024-03-01T11:30:00Z', updated_at: '2024-03-01T11:30:00Z',
+    platform: 'email', subject: 'Re: Follow-up: Enterprise Plan',
+    sender: 'contact', sender_name: 'Alice Johnson',
+    receiver: 'user', user_id: 'user-1',
+    contact_id: 'contact-1', account_id: 'account-1',
+    contact_email: 'alice@acme.com',
+    User: { id: 'user-1', firstName: 'Sam', lastName: 'Rivera', avatar: '', email: 'sam@easyin.com', account_id: 'account-1', created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z' } as any,
+    Contact: mockContacts[0] as any,
+  },
+  {
+    id: 'msg-2-2', text: '<p>Sounds interesting! We are evaluating tools. Send me a one-pager?</p>',
+    created_at: '2024-03-06T09:15:00Z', updated_at: '2024-03-06T09:15:00Z',
+    platform: 'email', subject: 'Re: Outreach workflow',
+    sender: 'contact', sender_name: 'Bob Smith',
+    receiver: 'user', user_id: 'user-1',
+    contact_id: 'contact-2', account_id: 'account-1',
+    contact_email: 'bob@acme.com',
+    User: { id: 'user-1', firstName: 'Sam', lastName: 'Rivera', avatar: '', email: 'sam@easyin.com', account_id: 'account-1', created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z' } as any,
+    Contact: mockContacts[1] as any,
+  },
+  {
+    id: 'msg-5-2', text: '<p>Thank you! Shared with my VP. Feedback by end of week.</p>',
+    created_at: '2024-03-16T10:00:00Z', updated_at: '2024-03-16T10:00:00Z',
+    platform: 'email', subject: 'Re: Product Overview',
+    sender: 'contact', sender_name: 'Emma Davis',
+    receiver: 'user', user_id: 'user-1',
+    contact_id: 'contact-5', account_id: 'account-1',
+    contact_email: 'emma@initech.com',
+    User: { id: 'user-1', firstName: 'Sam', lastName: 'Rivera', avatar: '', email: 'sam@easyin.com', account_id: 'account-1', created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z' } as any,
+    Contact: mockContacts[4] as any,
+  },
+  {
+    id: 'msg-7-2', text: '<p>We have budget approved and need to move by end of quarter.</p>',
+    created_at: '2024-03-21T16:00:00Z', updated_at: '2024-03-21T16:00:00Z',
+    platform: 'email', subject: 'Re: Intro call',
+    sender: 'contact', sender_name: 'Grace Wilson',
+    receiver: 'user', user_id: 'user-1',
+    contact_id: 'contact-7', account_id: 'account-1',
+    contact_email: 'grace@umbrella.com',
+    User: { id: 'user-1', firstName: 'Sam', lastName: 'Rivera', avatar: '', email: 'sam@easyin.com', account_id: 'account-1', created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z' } as any,
+    Contact: mockContacts[6] as any,
+  },
+];
+
 export const mockResponseMessages = {
   messages: [mockMessages["contact-1"][1], mockMessages["contact-2"][1], mockMessages["contact-5"][1], mockMessages["contact-7"][1]],
 };
@@ -95,14 +144,16 @@ export const mockRecordsList: RecordsResponse = {
   records: [
     ...mockContacts.map((c) => ({ type: "contact" as const, page: 1, limit: 10, data: c })),
     ...mockCompanies.map((c) => ({ type: "company" as const, page: 1, limit: 10, data: c })),
+    ...mockConvoRecords.map((m) => ({ type: "message" as const, page: 1, limit: 10, data: m })),
   ],
-  page: 1, limit: 10, total: mockContacts.length + mockCompanies.length, hasNext: false,
+  page: 1, limit: 10, total: mockContacts.length + mockCompanies.length + mockConvoRecords.length, hasNext: false,
 };
 
 export const mockRecordsAll = {
   items: [
     ...mockContacts.map((c) => ({ id: c.id, type: "contact" })),
     ...mockCompanies.map((c) => ({ id: c.id, type: "company" })),
+    ...mockConvoRecords.map((m) => ({ id: m.id, type: "message" })),
   ],
 };
 

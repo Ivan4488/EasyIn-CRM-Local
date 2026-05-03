@@ -5,7 +5,7 @@
 import {
   mockAccounts, mockActiveAccount, mockContacts, mockCompanies,
   mockMessages, mockResponseMessages, mockTeamMembers, mockBilling,
-  mockRecordsList, mockRecordsAll, mockContactProperties, mockCompanyProperties,
+  mockConvoRecords, mockRecordsAll, mockContactProperties, mockCompanyProperties,
   mockAccountProperties, mockTeamProperties, mockContactAssociations,
   mockCompanyAssociations, mockDomain,
 } from "~/data/mockData";
@@ -24,15 +24,18 @@ const get = <T = any>(url: string): Promise<{ data: T }> => {
 
     const allContactRecords = mockContacts.map((c) => ({ type: 'contact' as const, page: 1, limit: 10, data: c }));
     const allCompanyRecords = mockCompanies.map((c) => ({ type: 'company' as const, page: 1, limit: 10, data: c }));
-    let records: any[] = [...allContactRecords, ...allCompanyRecords];
+    const allMessageRecords = mockConvoRecords.map((m) => ({ type: 'message' as const, page: 1, limit: 10, data: m }));
+    let records: any[] = [...allContactRecords, ...allCompanyRecords, ...allMessageRecords];
 
     if (filters.length > 0) {
       const wantsContact = filters.includes('contact');
       const wantsCompany = filters.includes('company');
-      if (wantsContact || wantsCompany) {
+      const wantsMessage = filters.includes('message');
+      if (wantsContact || wantsCompany || wantsMessage) {
         records = records.filter((r: any) =>
           (wantsContact && r.type === 'contact') ||
-          (wantsCompany && r.type === 'company')
+          (wantsCompany && r.type === 'company') ||
+          (wantsMessage && r.type === 'message')
         );
       }
     }
