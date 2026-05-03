@@ -16,9 +16,35 @@ const delay = (ms = 0) => new Promise((r) => setTimeout(r, ms));
 const ok = <T>(data: T) => Promise.resolve({ data, status: 200, statusText: "OK", headers: {}, config: {} as any });
 
 const get = <T = any>(url: string): Promise<{ data: T }> => {
-  // Records list - home page
-  if (url.startsWith("/records/list")) return ok(mockRecordsList as any);
-  if (url === "/records/all") return ok(mockRecordsAll as any);
+  // Records list - home page — filter by activeItems exactly like the real backend
+  if (url.startsWith('/records/list')) {
+    const params = new URLSearchParams(url.includes('?') ? url.split('?')[1] : '');
+    const filterParam = params.get('filter') ?? '';
+    const filters = filterParam ? filterParam.split(',').map((f: string) => f.trim()).filter(Boolean) : [];
+
+    const allContactRecords = mockContacts.map((c) => ({ type: 'contact' as const, page: 1, limit: 10, data: c }));
+    const allCompanyRecords = mockCompanies.map((c) => ({ type: 'company' as const, page: 1, limit: 10, data: c }));
+    let records: any[] = [...allContactRecords, ...allCompanyRecords];
+
+    if (filters.length > 0) {
+      const wantsContact = filters.includes('contact');
+      const wantsCompany = filters.includes('company');
+      if (wantsContact || wantsCompany) {
+        records = records.filter((r: any) =>
+          (wantsContact && r.type === 'contact') ||
+          (wantsCompany && r.type === 'company')
+        );
+      }
+    }
+
+    const pg = parseInt(params.get('page') ?? '1', 10);
+    const lim = parseInt(params.get('limit') ?? '10', 10);
+    const start = (pg - 1) * lim;
+    const paged = records.slice(start, start + lim);
+
+    return ok({ records: paged, page: pg, limit: lim, total: records.length, hasNext: start + lim < records.length } as any);
+  }
+  if (url === '/records/all') return ok(mockRecordsAll as any);
 
   // Accounts
   if (url === "/accounts/active") return ok(mockActiveAccount as any);
