@@ -1,0 +1,17 @@
+.btn  {
+  display: none;
+}
+
+.btnHovered {
+  display: block;
+}
+
+.btnSelected {
+  display: block;
+}
+
+.container:hover {
+  .btn {
+    display: block;
+  }
+}

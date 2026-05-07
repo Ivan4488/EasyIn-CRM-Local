@@ -1,0 +1,21 @@
+.message {
+  a {
+    @apply text-strong-green;
+    text-decoration: underline;
+  }
+}
+
+.messageContainer {
+  border-color: #55637F;
+  background: linear-gradient(180deg, rgba(115, 162, 255, 0.12) 0%, rgba(69, 97, 153, 0.12) 100%);
+}
+
+.outboundMessage {
+  border-color: #ADB2B266;
+  background: linear-gradient(180deg, rgba(55, 62, 65, 0.75) 0%, rgba(55, 62, 65, 0.375) 100%);
+}
+
+.noteMessage {
+  border-color: #ADB2B266;
+  background: rgba(29, 30, 32, 0.20);
+}

@@ -1,0 +1,23 @@
+import classNames from "classnames";
+import { SVGAttributes } from "react";
+
+export const Activity = (props: SVGAttributes<SVGElement>) => {
+  return (
+    <svg
+      {...props}
+      className={classNames(props.className, "stroke-current")}
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M18.3333 10H15L12.5 17.5L7.49996 2.5L4.99996 10H1.66663"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};

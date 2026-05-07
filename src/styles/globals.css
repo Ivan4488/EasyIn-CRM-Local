@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "ProximaNovaSoft";
+  font-display: swap;
+  src: url("../fonts/ProximaNovaSoft-Regular.woff2") format("woff2"),
+    url("../fonts/ProximaNovaSoft-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "ProximaNovaSoft";
+  font-display: swap;
+  src: url("../fonts/ProximaNovaSoft-Medium.woff2") format("woff2"),
+    url("../fonts/ProximaNovaSoft-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "ProximaNovaSoft";
+  font-display: swap;
+  src: url("../fonts/ProximaNovaSoft-Semibold.woff2") format("woff2"),
+    url("../fonts/ProximaNovaSoft-Semibold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "ProximaNovaSoft";
+  font-display: swap;
+  src: url("../fonts/ProximaNovaSoft-Bold.woff2") format("woff2"),
+    url("../fonts/ProximaNovaSoft-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+html {
+  min-width: 1000px;
+  overflow-x: auto;
+}
+
+body {
+  font-family: "ProximaNovaSoft", sans-serif;
+  @apply text-white;
+  overscroll-behavior: none;
+  scroll-behavior: smooth;
+}
+
+@import "react-tippy/dist/tippy.css";
+.tippy-tooltip.emoji-theme {
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  padding: 0;
+  border-radius: 12px;
+}
+
+html body[data-scroll-locked] {
+  --removed-body-scroll-bar-size: 0 !important;
+  margin-right: 0 !important;
+  overflow-y: hidden !important;
+}
+
+body {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
